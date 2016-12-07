@@ -47,11 +47,23 @@ describe(Movie) do
       expect(Movie.all).to(eq([]))
     end
   end
-  describe('#update_title') do
+  describe('#update') do
     it("updates an movies title") do
       @movie1.save
-      @movie1.update_title(:title => 'Happy Gilmore girls')
+      @movie1.update({:title => 'Happy Gilmore girls'})
       expect(@movie1.title).to(eq('Happy Gilmore girls'))
+    end
+  end
+  describe('#update') do
+    it("adds an actor to a movie") do
+      @movie4  = Movie.new({:id => nil, :title => "Die Hard with a Vengeance"})
+      @movie4.save
+      actor1 = Actor.new(:id => nil, :name => "Bruce Willis")
+      actor1.save
+      actor2 = Actor.new(:id => nil, :name => "Samuel L Jackson")
+      actor2.save
+      @movie4.update(:actor_ids => [actor1.id, actor2.id])
+      expect(@movie4.actors).to(eq([actor1, actor2]))
     end
   end
 end

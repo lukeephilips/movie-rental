@@ -10,6 +10,7 @@
     <input type="text" name="title" placeholder="New title" class="form-control">
     <button type="submit" class="btn btn-danger">Update</button>
   </div>
+
 </form>
 <form action="/movie/<%= @movie.id %>/delete" method="post">
   <input type="hidden" name="_method" value="delete">

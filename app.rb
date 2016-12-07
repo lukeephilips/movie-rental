@@ -17,29 +17,16 @@ get('/') do
   erb(:index)
 end
 
-post('/movies/new') do
-
-  movie = Movie.new({:id => nil, :title => params['title']})
-  movie.save
-  actor = Actor.new({:id => nil, :name => params['name']})
-  actor.save
-  @join = DB.exec("INSERT INTO movies_actors (actor_id, movie_id) VALUES (#{actor.id}, #{movie.id});")
-  @customers = Customer.all
-  @movies = Movie.all
-  erb(:index)
-end
-
-post('/customers/new') do
-  Customer.new({:id => nil, :name => params['name']}).save
-  @customers = Customer.all
-  @movies = Movie.all
-  erb(:index)
-end
-
 get('/customer/:id') do
   @customer = Customer.find_by_id(params['id'].to_i)
   @movies = Movie.all
 erb(:customer)
+end
+post('/customer/new') do
+  Customer.new({:id => nil, :name => params['name']}).save
+  @customers = Customer.all
+  @movies = Movie.all
+  erb(:index)
 end
 patch('/customer/:id') do
   @customer = Customer.find_by_id(params['id'].to_i)
@@ -58,6 +45,18 @@ end
 get('/movie/:id') do
   @movie = Movie.find_by_id(params['id'].to_i)
   erb(:movie)
+end
+
+post('/movie/new') do
+
+  movie = Movie.new({:id => nil, :title => params['title']})
+  movie.save
+  actor = Actor.new({:id => nil, :name => params['name']})
+  actor.save
+  @join = DB.exec("INSERT INTO movies_actors (actor_id, movie_id) VALUES (#{actor.id}, #{movie.id});")
+  @customers = Customer.all
+  @movies = Movie.all
+  erb(:index)
 end
 patch('/movie/:id') do
   @movie = Movie.find_by_id(params['id'].to_i)
