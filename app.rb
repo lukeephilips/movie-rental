@@ -41,6 +41,12 @@ get('/customer/:id') do
   @movies = Movie.all
 erb(:customer)
 end
+patch('/customer/:id') do
+  @customer = Customer.find_by_id(params['id'].to_i)
+  @customer.update_name(:name => params['name'])
+  @movies = Movie.all
+  erb(:customer)
+end
 delete('/customer/:id/delete') do
   @customer = Customer.find_by_id(params['id'].to_i)
   Customer.delete(@customer)
@@ -51,7 +57,12 @@ end
 
 get('/movie/:id') do
   @movie = Movie.find_by_id(params['id'].to_i)
-erb(:movie)
+  erb(:movie)
+end
+patch('/movie/:id') do
+  @movie = Movie.find_by_id(params['id'].to_i)
+  @movie.update_title(:title => params['title'])
+  erb(:movie)
 end
 
 delete('/movie/:id/delete') do
