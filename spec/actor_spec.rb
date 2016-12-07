@@ -47,4 +47,11 @@ describe(Actor) do
       expect(Actor.all).to(eq([]))
     end
   end
+  describe('#update_name') do
+    it("updates an actors name") do
+      @actor1.save
+      @actor1.update_name(:name => 'Gruce Willis')
+      expect(@actor1.name).to(eq('Gruce Willis'))
+    end
+  end
 end
