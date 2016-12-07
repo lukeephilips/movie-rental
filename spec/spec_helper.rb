@@ -2,7 +2,7 @@ require('rspec')
 require('pry-nav')
 require('actor')
 require('movie')
-require('user')
+require('customer')
 require('pg')
 
 DB = PG.connect ({:dbname => 'rentals_test'})
