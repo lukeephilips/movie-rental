@@ -25,16 +25,16 @@ class Customer
      customers
    end
    def self.find_by_id(id)
-     actor = DB.exec("SELECT * FROM customer WHERE id = #{id};")
-     id = actor.first['id']
-     name = actor.first['name']
-     found_actor = Actor.new({:id => id, :name => name})
+     customer = DB.exec("SELECT * FROM customer WHERE id = #{id};")
+     id = customer.first['id']
+     name = customer.first['name']
+     found_customer = Customer.new({:id => id, :name => name})
    end
    def self.find_by_name(name)
-     actor = DB.exec("SELECT * FROM customer WHERE name = '#{name}';")
-     id = actor.first['id']
-     name = actor.first['name']
-     found_actor = Actor.new({:id => id, :name => name})
+     customer = DB.exec("SELECT * FROM customer WHERE name = '#{name}';")
+     id = customer.first['id']
+     name = customer.first['name']
+     found_customer = Customer.new({:id => id, :name => name})
    end
    def self.delete(customer)
      DB.exec("DELETE FROM customer WHERE id = '#{customer.id}';")

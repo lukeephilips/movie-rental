@@ -1,0 +1,9 @@
+<h1><%= @movie.title %></h1>
+
+<h3>Lead Actor:</h3>
+
+<form action="/movie/<%= @movie.id %>/delete" method="post">
+
+<input type="hidden" name="_method" value="delete">
+<button type="submit" class="btn btn-danger">Delete</button>
+</form>
