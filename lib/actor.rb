@@ -18,4 +18,8 @@ class Actor
     result = DB.exec("INSERT INTO actors (name) VALUES ('#{@name}') RETURNING id;")
      @id = result[0]['id'].to_i
    end
+
+   def ==(another_actor)
+     self.name() && another_actor.name()
+   end
 end

@@ -22,4 +22,10 @@ describe(Actor) do
       expect(@actor1.id).to be_an_instance_of(Fixnum)
     end
   end
+  describe('#==') do
+    it("returns true when two objects attributes are the same") do
+      actor3  = Actor.new({:id => nil, :name => "Bruce Willis"})
+      expect(@actor1).to(eq(actor3))
+    end
+  end
 end
