@@ -14,4 +14,8 @@ class Actor
     end
     actors
   end
+  def save
+    result = DB.exec("INSERT INTO actors (name) VALUES ('#{@name}') RETURNING id;")
+     @id = result[0]['id'].to_i
+   end
 end
