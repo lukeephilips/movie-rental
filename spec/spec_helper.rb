@@ -1,5 +1,5 @@
 require('rspec')
-require('pry-nav')
+require('pry')
 require('actor')
 require('movie')
 require('customer')
