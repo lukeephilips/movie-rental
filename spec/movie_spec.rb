@@ -28,4 +28,23 @@ describe(Movie) do
       expect(@movie1).to(eq(movie3))
     end
   end
+  describe('.find_by_id') do
+    it("returns an movie object based on its id") do
+      @movie1.save
+      expect(Movie.find_by_id(@movie1.id)).to(eq(@movie1))
+    end
+  end
+  describe('.find_by_title') do
+    it("returns an movie object based on its title") do
+      @movie1.save
+      expect(Movie.find_by_title(@movie1.title)).to(eq(@movie1))
+    end
+  end
+  describe('.delete') do
+    it("deletes an object") do
+      @movie1.save
+      Movie.delete(@movie1)
+      expect(Movie.all).to(eq([]))
+    end
+  end
 end
