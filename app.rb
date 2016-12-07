@@ -5,6 +5,7 @@ require('./lib/movie')
 require('./lib/actor')
 require('./lib/customer')
 require('pg')
+require('pry')
 also_reload('lib/**/*.rb')
 
 DB = PG.connect({:dbname => 'rentals_test'})
@@ -18,14 +19,13 @@ end
 
 post('/movies/new') do
 
-  Movie.new({:id => nil, :title => params['title']}).save
-  Actor.new({:id => nil, :name => params['name']}).save
-  # call to movies to get ID
-  # call to actors to get ID
-  # Join actors and movies using IDs
+  movie = Movie.new({:id => nil, :title => params['title']})
+  movie.save
+  actor = Actor.new({:id => nil, :name => params['name']})
+  actor.save
+  @join = DB.exec("INSERT INTO movies_actors (actor_id, movie_id) VALUES (#{actor.id}, #{movie.id});")
   @customers = Customer.all
   @movies = Movie.all
-
   erb(:index)
 end
 
