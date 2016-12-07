@@ -34,8 +34,7 @@ class Actor
      name = actor.first['name']
      found_actor = Actor.new({:id => id, :name => name})
    end
-
-   def delete(id)
-     DB.exec("DELETE FROM actors WHERE id = #{id};")
+   def self.delete(actor)
+     DB.exec("DELETE FROM actors WHERE id = '#{actor.id}';")
    end
 end

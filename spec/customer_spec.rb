@@ -28,4 +28,23 @@ describe(Customer) do
       expect(@customer1).to(eq(customer3))
     end
   end
+  describe('.find_by_id') do
+    it("returns an customer object based on its id") do
+      @customer1.save
+      expect(Customer.find_by_id(@customer1.id)).to(eq(@customer1))
+    end
+  end
+  describe('.find_by_name') do
+    it("returns an customer object based on its name") do
+      @customer1.save
+      expect(Customer.find_by_name(@customer1.name)).to(eq(@customer1))
+    end
+  end
+  describe('.delete') do
+    it("deletes an object") do
+      @customer1.save
+      Customer.delete(@customer1)
+      expect(Customer.all).to(eq([]))
+    end
+  end
 end

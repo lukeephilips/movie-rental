@@ -40,4 +40,11 @@ describe(Actor) do
       expect(Actor.find_by_name(@actor1.name)).to(eq(@actor1))
     end
   end
+  describe('.delete') do
+    it("deletes an object") do
+      @actor1.save
+      Actor.delete(@actor1)
+      expect(Actor.all).to(eq([]))
+    end
+  end
 end
