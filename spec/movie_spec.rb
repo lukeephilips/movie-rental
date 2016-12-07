@@ -47,4 +47,11 @@ describe(Movie) do
       expect(Movie.all).to(eq([]))
     end
   end
+  describe('#update_title') do
+    it("updates an movies title") do
+      @movie1.save
+      @movie1.update_title(:title => 'Happy Gilmore girls')
+      expect(@movie1.title).to(eq('Happy Gilmore girls'))
+    end
+  end
 end

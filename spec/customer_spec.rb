@@ -47,4 +47,11 @@ describe(Customer) do
       expect(Customer.all).to(eq([]))
     end
   end
+  describe('#update_name') do
+    it("updates an customers name") do
+      @customer1.save
+      @customer1.update_name(:name => 'Big Willy')
+      expect(@customer1.name).to(eq('Big Willy'))
+    end
+  end
 end
