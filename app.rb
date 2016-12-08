@@ -60,7 +60,7 @@ post('/movie/new') do
 end
 patch('/movie/:id') do
   @movie = Movie.find_by_id(params['id'].to_i)
-  @movie.update_title(:title => params['title'])
+  @movie.update(:title => params['title'])
   erb(:movie)
 end
 

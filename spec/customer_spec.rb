@@ -54,4 +54,16 @@ describe(Customer) do
       expect(@customer1.name).to(eq('Big Willy'))
     end
   end
+
+  describe("#checkout") do
+    it("allows a customer to checkout a movie") do
+      @customer1.save
+      movie1 = Movie.new({:id => nil, :title => "Die Hard"})
+      movie2 = Movie.new({:id => nil, :title => "Snakes on a Plane"})
+      movie1.save
+      movie2.save
+      @customer1.checkout(:movie_ids => [movie1.id, movie2.id])
+      expect(@customer1.movies[0].title).to(eq('Die Hard'))
+    end
+  end
 end

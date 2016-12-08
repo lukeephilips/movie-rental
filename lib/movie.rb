@@ -4,6 +4,7 @@ class Movie
     @id = attributes[:id]
     @title = attributes[:title]
   end
+
   def update(attributes)
     @id = self.id
     @title = attributes.fetch(:title, @title)
@@ -13,9 +14,12 @@ class Movie
       DB.exec("INSERT INTO movies_actors (actor_id, movie_id) VALUES (#{actor_id}, #{self.id});")
     end
   end
+
+
+
   def actors
     movie_actors =[]
-    results = DB.exec("SELECT actor_id from movies_actors WHERE movie_id = #{self.id};")
+    results = DB.exec("SELECT actor_id FROM movies_actors WHERE movie_id = #{self.id};")
     results.each do |result|
       actor_id = result.fetch('actor_id').to_i
       actor = DB.exec("SELECT * FROM actors WHERE id = #{actor_id};")
@@ -23,6 +27,18 @@ class Movie
       movie_actors.push(Actor.new({:name => name, :id => actor_id}))
     end
     movie_actors
+  end
+
+  def history
+    checked_out = []
+    results = DB.exec("SELECT customer_id FROM checkouts WHERE movie_id = #{self.id};")
+    results.each do |result|
+      customer_id = result.fetch('customer_id').to_i
+      customer = DB.exec("SELECT * FROM customer WHERE id = #{customer_id};")
+      name = customer.first.fetch('name')
+      checked_out.push(Actor.new({:name => name, :id => customer_id}))
+    end
+    checked_out
   end
 
   def save

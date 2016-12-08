@@ -54,7 +54,7 @@ describe(Movie) do
       expect(@movie1.title).to(eq('Happy Gilmore girls'))
     end
   end
-  describe('#update') do
+  describe('#actors') do
     it("adds an actor to a movie") do
       @movie4  = Movie.new({:id => nil, :title => "Die Hard with a Vengeance"})
       @movie4.save
@@ -64,6 +64,17 @@ describe(Movie) do
       actor2.save
       @movie4.update(:actor_ids => [actor1.id, actor2.id])
       expect(@movie4.actors).to(eq([actor1, actor2]))
+    end
+  end
+
+  describe('#history') do
+    it("checks the history of a particular movies past checkouts") do
+      customer1 = Customer.new({:id => nil, :name => "James"})
+      customer1.save
+      @movie1.save
+      @movie2.save
+      customer1.checkout(:movie_ids => [@movie1.id, @movie2.id])
+      expect(@movie1.history[0].name).to(eq('James'))
     end
   end
 end

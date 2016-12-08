@@ -14,6 +14,42 @@ class Customer
      DB.exec("UPDATE customer SET name = '#{@name}' WHERE id = #{@id};")
    end
 
+  def checkout(attributes)
+    @id = self.id
+    @name = attributes.fetch(:name, @name)
+
+    attributes.fetch(:movie_ids, []).each() do |movie_id|
+      DB.exec("INSERT INTO checkouts (movie_id, customer_id) VALUES (#{movie_id}, #{self.id});")
+    end
+  end
+
+  def movies
+    checkouts = []
+    results = DB.exec("SELECT movie_id FROM checkouts WHERE customer_id = #{self.id};")
+    results.each do |result|
+      movie_id = result.fetch("movie_id").to_i
+      movie = DB.exec("SELECT * FROM movies WHERE id = #{movie_id};")
+      title = movie.first.fetch("title")
+      new_movie = Movie.new(:title => title, :id => movie_id)
+      checkouts.push(new_movie)
+    end
+    checkouts
+  end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
    def self.all
      returned_customers = DB.exec("SELECT * FROM customer;")
      customers = []
