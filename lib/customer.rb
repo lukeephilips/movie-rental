@@ -8,16 +8,17 @@ class Customer
     result = DB.exec("INSERT INTO customer (name) VALUES ('#{@name}') RETURNING id;")
      @id = result[0]['id'].to_i
    end
-   def update_name(attributes)
-     @id = self.id
-     @name = attributes[:name]
-     DB.exec("UPDATE customer SET name = '#{@name}' WHERE id = #{@id};")
-   end
+  #  def update_name(attributes)
+  #    @id = self.id
+  #    @name = attributes[:name]
+  #    DB.exec("UPDATE customer SET name = '#{@name}' WHERE id = #{@id};")
+  #  end
 
 # JOIN METHODS
   def checkout(attributes) #patch checkouts
     @id = self.id
     @name = attributes.fetch(:name, @name)
+    DB.exec("UPDATE customer SET name = '#{@name}' WHERE id = #{@id};")
 
     attributes.fetch(:movie_ids, []).each() do |movie_id|
       DB.exec("INSERT INTO checkouts (movie_id, customer_id) VALUES (#{movie_id}, #{self.id});")
@@ -36,6 +37,19 @@ class Customer
     end
     checkouts
   end
+
+  # def current_movie #read checkouts
+  #   checkouts = []
+  #   results = DB.exec("SELECT movie_id FROM checkouts WHERE customer_id = #{self.id};")
+  #   results.each do |result|
+  #     movie_id = result.fetch("movie_id").to_i
+  #     movie = DB.exec("SELECT * FROM movies WHERE id = #{movie_id};")
+  #     title = movie.first.fetch("title")
+  #     new_movie = Movie.new(:title => title, :id => movie_id)
+  #     checkouts.push(new_movie)
+  #   end
+  #   checkouts
+  # end
 
   # END
 

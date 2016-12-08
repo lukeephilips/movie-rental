@@ -3,10 +3,10 @@
   <div class="row">
     <div class="col-sm-6">
       <h4>We have the following movies available:</h4>
-      <% if @movies.any? %>
+      <% if @in_stock.any? %>
         <form action="/customer/<%= @customer.id %>" method="post">
           <input type="hidden" name="_method" value="patch">
-          <% @movies.each do |movie| %>
+          <% @in_stock.each do |movie| %>
             <div class="checkbox">
               <label>
                 <input type="checkbox" name="movie_ids[]" value="<%= movie.id() %>"><%= movie.title() %>

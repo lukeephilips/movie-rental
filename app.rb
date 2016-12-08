@@ -14,30 +14,31 @@ DB = PG.connect({:dbname => 'rentals_test'})
 get('/') do
   @customers = Customer.all
   @movies = Movie.all
+  @in_stock = Movie.in_stock
   erb(:index)
 end
 
 get('/customer/:id') do
   @customer = Customer.find_by_id(params['id'].to_i)
   @movies = Movie.all
+  @in_stock = Movie.in_stock
 erb(:customer)
 end
 post('/customer/new') do
   Customer.new({:id => nil, :name => params['name']}).save
   @customers = Customer.all
   @movies = Movie.all
+  @in_stock = Movie.in_stock
   erb(:index)
 end
 patch('/customer/:id') do
   @customer = Customer.find_by_id(params['id'].to_i)
 
-  @customer.checkout({:movie_ids => params.fetch('movie_ids')})
+  movie_ids = params.fetch('movie_ids',[])
+  name = params.fetch('name', @customer.name)
+  @customer.checkout({:movie_ids => movie_ids, :name => name})
   @movies = Movie.all
-
-
-  # @customer = Customer.find_by_id(params['id'].to_i)
-  # @customer.update_name(:name => params['name'])
-  # @movies = Movie.all
+  @in_stock = Movie.in_stock
   erb(:customer)
 end
 delete('/customer/:id/delete') do
@@ -45,6 +46,7 @@ delete('/customer/:id/delete') do
   Customer.delete(@customer)
   @customers = Customer.all
   @movies = Movie.all
+  @in_stock = Movie.in_stock
 erb(:index)
 end
 
@@ -61,6 +63,7 @@ post('/movie/new') do
   @join = DB.exec("INSERT INTO movies_actors (actor_id, movie_id) VALUES (#{actor.id}, #{movie.id});")
   @customers = Customer.all
   @movies = Movie.all
+  @in_stock = Movie.in_stock
   erb(:index)
 end
 patch('/movie/:id') do
@@ -73,5 +76,6 @@ delete('/movie/:id/delete') do
   Movie.delete(@movie)
   @customers = Customer.all
   @movies = Movie.all
+  @in_stock = Movie.in_stock
 erb(:index)
 end

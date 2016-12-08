@@ -4,6 +4,8 @@ describe(Movie) do
   before() do
     @movie1 = Movie.new({:id => nil, :title => "Die Hard"})
     @movie2 = Movie.new({:id => nil, :title => "Snakes on a Plane"})
+    @movie3 = Movie.new({:id => nil, :title => "Peter Pan"})
+
 
   end
   describe('.all') do
@@ -78,6 +80,24 @@ describe(Movie) do
       @movie2.save
       customer1.checkout(:movie_ids => [@movie1.id, @movie2.id])
       expect(@movie1.history[0].name).to(eq('James'))
+    end
+  end
+  describe('#in_stock') do
+    it("only returns movies that are not checked out") do
+      customer1 = Customer.new({:id => nil, :name => "James"})
+      customer1.save
+      @movie3.save
+      customer1.checkout(:movie_ids => [@movie3.id])
+      expect(Movie.in_stock).to_not(include(@movie3))
+    end
+  end
+  describe('#in_stock') do
+    it("returns all movies that are not checked out") do
+      customer1 = Customer.new({:id => nil, :name => "James"})
+      customer1.save
+      movie4 = Movie.new({:id => nil, :title => "Snow White"})
+      movie4.save
+      expect(Movie.in_stock).to(include(movie4))
     end
   end
 end

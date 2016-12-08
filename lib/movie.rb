@@ -40,6 +40,17 @@ class Movie
     checked_out
   end
 
+  def self.in_stock #read checkouts
+    available = []
+    results = DB.exec("SELECT * FROM movies WHERE id NOT IN (SELECT movie_id FROM checkouts);")
+    results.each do |result|
+      movie_id = result.fetch('id').to_i
+      title = result.fetch('title')
+      available.push(Movie.new({:id => movie_id, :title => title}))
+    end
+    available
+  end
+
   def save
     result = DB.exec("INSERT INTO movies (title) VALUES ('#{@title}') RETURNING id;")
      @id = result[0]['id'].to_i

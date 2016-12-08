@@ -50,10 +50,10 @@ describe(Customer) do
       expect(Customer.all).to(eq([]))
     end
   end
-  describe('#update_name') do
+  describe('#update') do
     it("updates an customers name") do
       @customer1.save
-      @customer1.update_name(:name => 'Big Willy')
+      @customer1.checkout(:name => 'Big Willy')
       expect(@customer1.name).to(eq('Big Willy'))
     end
   end
