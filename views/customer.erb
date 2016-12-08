@@ -29,10 +29,10 @@
             <input type="hidden" name="_method" value="delete">
           </div>
           <div class="form-group">
-            <% @customer.movies.each do |movie| %>
+            <% @customer.movies.each.with_index do |movie, index| %>
               <div class="checkbox">
                 <label>
-                  <input type="checkbox" name="movie_ids[]" value="<%= movie.id() %>"><%= movie.title() %>
+                  <input type="checkbox" name="movie_ids[]" value="<%= movie[0].id() %>"><%= movie[0].title() %> - <span class="due_date"> Due: <%= movie[1] %></span>
                 </label>
               </div>
           <% end %>

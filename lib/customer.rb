@@ -1,3 +1,5 @@
+require 'date'
+
 class Customer
   attr_reader(:id, :name)
   def initialize(attributes)
@@ -18,10 +20,12 @@ class Customer
   def checkout(attributes) #patch checkouts
     @id = self.id
     @name = attributes.fetch(:name, @name)
+    due = (Date.today + 3).to_s
+
     DB.exec("UPDATE customer SET name = '#{@name}' WHERE id = #{@id};")
 
     attributes.fetch(:movie_ids, []).each() do |movie_id|
-      DB.exec("INSERT INTO checkouts (movie_id, customer_id) VALUES (#{movie_id}, #{self.id});")
+      DB.exec("INSERT INTO checkouts (movie_id, customer_id, due_date) VALUES (#{movie_id}, #{self.id}, '#{due}');")
     end
   end
   def return(attributes) #patch checkouts
@@ -34,13 +38,14 @@ class Customer
 
   def movies #read checkouts
     checkouts = []
-    results = DB.exec("SELECT movie_id FROM checkouts WHERE customer_id = #{self.id};")
+    results = DB.exec("SELECT * FROM checkouts WHERE customer_id = #{self.id};")
     results.each do |result|
       movie_id = result.fetch("movie_id").to_i
+      due_date = result.fetch("due_date")
       movie = DB.exec("SELECT * FROM movies WHERE id = #{movie_id};")
       title = movie.first.fetch("title")
-      new_movie = Movie.new(:title => title, :id => movie_id)
-      checkouts.push(new_movie)
+      new_movie = Movie.new(:title => title, :due_date => due_date, :id => movie_id)
+      checkouts.push([new_movie, due_date])
     end
     checkouts
   end

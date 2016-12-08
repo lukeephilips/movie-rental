@@ -66,7 +66,7 @@ describe(Customer) do
       movie1.save
       movie2.save
       @customer1.checkout(:movie_ids => [movie1.id, movie2.id])
-      expect(@customer1.movies[0].title).to(eq('Die Hard'))
+      expect(@customer1.movies[0][0].title).to(eq('Die Hard'))
     end
   end
   describe("#movies") do
@@ -77,11 +77,22 @@ describe(Customer) do
       movie1.save
       movie2.save
       @customer1.checkout(:movie_ids => [movie1.id, movie2.id])
-      expect(@customer1.movies).to(eq([movie1, movie2]))
+      expect(@customer1.movies).to(eq([[movie1,'2016-12-11'], [movie2,'2016-12-11']]))
     end
   end
   describe("#movies") do
-    it("allows a customer to view their current movies checked out") do
+    it("allows a customer to view their current movie's due date") do
+      @customer1.save
+      movie1 = Movie.new({:id => nil, :title => "Die Hard"})
+      movie2 = Movie.new({:id => nil, :title => "Snakes on a Plane"})
+      movie1.save
+      movie2.save
+      @customer1.checkout(:movie_ids => [movie1.id, movie2.id])
+      expect(@customer1.movies[0][1]).to(eq('2016-12-11'))
+    end
+  end
+  describe("#return") do
+    it("allows a customer to see they have no movies checked out once they make a return") do
       @customer1.save
       movie1 = Movie.new({:id => nil, :title => "Die Hard"})
       movie2 = Movie.new({:id => nil, :title => "Snakes on a Plane"})

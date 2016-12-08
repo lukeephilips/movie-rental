@@ -8,6 +8,8 @@ require('pg')
 require('pry')
 also_reload('lib/**/*.rb')
 
+DB = PG.connect({:dbname => 'rentals_test'})
+
 get('/') do
   @customers = Customer.all
   @movies = Movie.all
@@ -106,7 +108,6 @@ delete('/movie/:id/delete') do
 erb(:index)
 end
 
-DB = PG.connect({:dbname => 'rentals_test'})
 movie = Movie.new({:id => nil, :title => "Die Hard"})
 movie.save
 actor = Actor.new({:id => nil, :name => "Bruce Willis"})
