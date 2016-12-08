@@ -7,7 +7,6 @@ class Movie
 
 # JOIN METHODS
   def update(attributes) #patch movies_actors
-    @id = self.id
     @title = attributes.fetch(:title, @title)
     DB.exec("UPDATE movies SET title = '#{@title}' WHERE id = #{@id};")
 
