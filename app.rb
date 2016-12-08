@@ -53,6 +53,7 @@ end
 
 get('/movie/:id') do
   @movie = Movie.find_by_id(params['id'].to_i)
+  @cast = @movie.actors
   erb(:movie)
 end
 post('/movie/new') do
