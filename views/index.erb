@@ -8,6 +8,18 @@
         </div>
         <button type="submit" class="btn btn-danger">Create</button>
       </form>
+      <ul>
+        <% if @customers.any? %>
+          <% @customers.each() do |customer| %>
+          <li><a href="/customer/<%= customer.id %>"><%= customer.name %></a></li>
+          <% end %>
+
+        <% else %>
+
+          <h3> There are no Customers yet. Do some advertising...</h3>
+
+        <% end %>
+      </ul>
     </div>
     <div class="col-sm-6">
       <h3> Add a Movie to the Database </h3>
@@ -27,18 +39,7 @@
   </div>
   <div class="row">
     <div class="col-sm-6">
-      <ul>
-        <% if @customers.any? %>
-          <% @customers.each() do |customer| %>
-          <li><a href="/customer/<%= customer.id %>"><%= customer.name %></a></li>
-          <% end %>
 
-        <% else %>
-
-          <h3> There are no Customers yet. Do some advertising...</h3>
-
-        <% end %>
-      </ul>
     </div>
     <div class="col-sm-6">
       <ul>
