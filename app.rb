@@ -63,19 +63,37 @@ get('/movie/:id') do
   erb(:movie)
 end
 post('/movie/new') do
-  movie = Movie.new({:id => nil, :title => params['title']})
-  movie.save
-  actor = Actor.new({:id => nil, :name => params['name']})
-  actor.save
-  @join = DB.exec("INSERT INTO movies_actors (actor_id, movie_id) VALUES (#{actor.id}, #{movie.id});")
+  @movie = Movie.new({:id => nil, :title => params['title']})
+  @movie.save
+  actor_name = params.fetch("name")
+  actor_name.each() do |name|
+    actor = Actor.new({:id => nil, :name => name })
+    actor.save
+    @movie.update(:actor_ids => [actor.id])
+  end
   @customers = Customer.all
   @movies = Movie.all
   @in_stock = Movie.in_stock
+  @cast = @movie.actors
   erb(:index)
 end
 patch('/movie/:id') do
   @movie = Movie.find_by_id(params['id'].to_i)
-  @movie.update(:title => params['title'])
+  if params['title'] == ''
+    new_actor = Actor.new(:id => nil, :name => params["name"])
+    new_actor.save
+    @movie.update(:actor_ids => [new_actor.id])
+    @cast = @movie.actors
+  elsif params['name'] == ''
+   @movie.update(:title => params['title'])
+   @cast = @movie.actors
+  else
+   @movie.update(:title => params['title'])
+   new_actor = Actor.new(:id => nil, :name => params["name"])
+   new_actor.save
+   @movie.update(:actor_ids => [new_actor.id])
+   @cast = @movie.actors
+  end
   erb(:movie)
 end
 delete('/movie/:id/delete') do
@@ -84,6 +102,7 @@ delete('/movie/:id/delete') do
   @customers = Customer.all
   @movies = Movie.all
   @in_stock = Movie.in_stock
+  @cast = @movie.actors
 erb(:index)
 end
 
