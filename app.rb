@@ -22,7 +22,7 @@ get('/customer/:id') do
   @customer = Customer.find_by_id(params['id'].to_i)
   @movies = Movie.all
   @in_stock = Movie.in_stock
-erb(:customer)
+  erb(:customer)
 end
 post('/customer/new') do
   Customer.new({:id => nil, :name => params['name']}).save
@@ -48,6 +48,15 @@ delete('/customer/:id/delete') do
   @movies = Movie.all
   @in_stock = Movie.in_stock
 erb(:index)
+end
+delete('/customer/:id/return') do
+  @customer = Customer.find_by_id(params['id'].to_i)
+  movie_ids = params.fetch('movie_ids',[])
+  @customer.return({:movie_ids => movie_ids})
+
+  @movies = Movie.all
+  @in_stock = Movie.in_stock
+erb(:customer)
 end
 
 

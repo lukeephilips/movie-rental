@@ -12,9 +12,9 @@
                 <input type="checkbox" name="movie_ids[]" value="<%= movie.id() %>"><%= movie.title() %>
               </label>
             </div>
-          <% end %>
-          <button type="submit" name="checkout" class="btn btn-danger">Checkout</button>
-        </form>
+        <% end %>
+        <button type="submit" name="checkout" class="btn btn-danger">Checkout</button>
+      </form>
 
       <% else %>
         <h3> All movies are checked out.</h3>
@@ -22,19 +22,29 @@
       <% end %>
   </div>
   <div class="col-sm-6">
-    <h4>Movie history for <%= @customer.name() %>: </h4>
-    <ul>
+    <h4>Current movies for <%= @customer.name() %>: </h4>
       <% if @customer.movies.any? %>
-        <% @customer.movies.each() do |movie| %>
-        <li><a href="/movie/<%= movie.id %>"><%= movie.title %></a></li>
-        <% end %>
+        <form action="/customer/<%= @customer.id %>/return" method="post">
+          <div class="form-group">
+            <input type="hidden" name="_method" value="delete">
+          </div>
+          <div class="form-group">
+            <% @customer.movies.each do |movie| %>
+              <div class="checkbox">
+                <label>
+                  <input type="checkbox" name="movie_ids[]" value="<%= movie.id() %>"><%= movie.title() %>
+                </label>
+              </div>
+          <% end %>
+        </div>
+        <button type="submit" name="checkout" class="btn btn-danger">Return</button>
+      </form>
 
       <% else %>
 
         <p> Welcome! Checkout a movie to see it in your history!</p>
 
       <% end %>
-    </ul>
   </div>
 </div>
 

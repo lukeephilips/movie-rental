@@ -70,7 +70,7 @@ describe(Customer) do
     end
   end
   describe("#movies") do
-    it("allows a customer to view their checkout history") do
+    it("allows a customer to view their current movies checked out") do
       @customer1.save
       movie1 = Movie.new({:id => nil, :title => "Die Hard"})
       movie2 = Movie.new({:id => nil, :title => "Snakes on a Plane"})
@@ -78,6 +78,18 @@ describe(Customer) do
       movie2.save
       @customer1.checkout(:movie_ids => [movie1.id, movie2.id])
       expect(@customer1.movies).to(eq([movie1, movie2]))
+    end
+  end
+  describe("#movies") do
+    it("allows a customer to view their current movies checked out") do
+      @customer1.save
+      movie1 = Movie.new({:id => nil, :title => "Die Hard"})
+      movie2 = Movie.new({:id => nil, :title => "Snakes on a Plane"})
+      movie1.save
+      movie2.save
+      @customer1.checkout(:movie_ids => [movie1.id, movie2.id])
+      @customer1.return(:movie_ids => [movie1.id, movie2.id])
+      expect(@customer1.movies).to(eq([]))
     end
   end
 end

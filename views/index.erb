@@ -39,8 +39,8 @@
     </div>
     <div class="col-sm-6">
       <ul>
-        <% if @movies.any? %>
-          <% @movies.each() do |movie| %>
+        <% if @in_stock.any? %>
+          <% @in_stock.each() do |movie| %>
           <li><a href="/movie/<%= movie.id %>"><%= movie.title %></a></li>
           <% end %>
 
