@@ -1,26 +1,42 @@
 <h3> Hello <%= @customer.name() %></h3>
 <div class="well">
-  <h4>We have the following movies available:</h4>
+  <div class="row">
+    <div class="col-sm-6">
+      <h4>We have the following movies available:</h4>
+      <% if @movies.any? %>
+        <form action="/customer/<%= @customer.id %>" method="post">
+          <input type="hidden" name="_method" value="patch">
+          <% @movies.each do |movie| %>
+            <div class="checkbox">
+              <label>
+                <input type="checkbox" name="movie_ids[]" value="<%= movie.id() %>"><%= movie.title() %>
+              </label>
+            </div>
+          <% end %>
+          <button type="submit" name="checkout" class="btn btn-danger">Checkout</button>
+        </form>
 
-    <% if @movies.any? %>
-      <form action="/customer/<%= @customer.id %>" method="post">
-        <input type="hidden" name="_method" value="patch">
-        <% @movies.each do |movie| %>
-          <div class="checkbox">
-            <label>
-              <input type="checkbox" name="movie_ids[]" value="<%= movie.id() %>"><%= movie.title() %>
-            </label>
-          </div>
+      <% else %>
+        <h3> All movies are checked out.</h3>
+
+      <% end %>
+  </div>
+  <div class="col-sm-6">
+    <h4>Movie history for <%= @customer.name() %>: </h4>
+    <ul>
+      <% if @customer.movies.any? %>
+        <% @customer.movies.each() do |movie| %>
+        <li><a href="/movie/<%= movie.id %>"><%= movie.title %></a></li>
         <% end %>
-        <button type="submit" name="checkout" class="btn btn-danger">Checkout</button>
-      </form>
 
-    <% else %>
+      <% else %>
 
-      <h3> All movies are checked out.</h3>
+        <p> Welcome! Checkout a movie to see it in your history!</p>
 
-    <% end %>
-  </ul>
+      <% end %>
+    </ul>
+  </div>
+</div>
 
   <form action="/customer/<%= @customer.id %>" method="post">
     <h4>Update Customer</h4>
