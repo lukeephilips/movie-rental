@@ -7,6 +7,9 @@ describe(Movie) do
 
   end
   describe('.all') do
+    before () do
+      DB.exec("DELETE FROM movies *;")
+    end
     it('returns an empty array if no movies exist') do
       expect(Movie.all).to(eq([]))
     end

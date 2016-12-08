@@ -5,7 +5,8 @@ class Movie
     @title = attributes[:title]
   end
 
-  def update(attributes)
+# JOIN METHODS
+  def update(attributes) #patch movies_actors
     @id = self.id
     @title = attributes.fetch(:title, @title)
     DB.exec("UPDATE movies SET title = '#{@title}' WHERE id = #{@id};")
@@ -15,9 +16,7 @@ class Movie
     end
   end
 
-
-
-  def actors
+  def actors #read movies_actors
     movie_actors =[]
     results = DB.exec("SELECT actor_id FROM movies_actors WHERE movie_id = #{self.id};")
     results.each do |result|
@@ -29,7 +28,7 @@ class Movie
     movie_actors
   end
 
-  def history
+  def history #read checkouts
     checked_out = []
     results = DB.exec("SELECT customer_id FROM checkouts WHERE movie_id = #{self.id};")
     results.each do |result|

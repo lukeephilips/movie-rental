@@ -14,7 +14,8 @@ class Customer
      DB.exec("UPDATE customer SET name = '#{@name}' WHERE id = #{@id};")
    end
 
-  def checkout(attributes)
+# JOIN METHODS
+  def checkout(attributes) #patch checkouts
     @id = self.id
     @name = attributes.fetch(:name, @name)
 
@@ -23,7 +24,7 @@ class Customer
     end
   end
 
-  def movies
+  def movies #read checkouts
     checkouts = []
     results = DB.exec("SELECT movie_id FROM checkouts WHERE customer_id = #{self.id};")
     results.each do |result|
@@ -36,19 +37,7 @@ class Customer
     checkouts
   end
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+  # END
 
    def self.all
      returned_customers = DB.exec("SELECT * FROM customer;")
@@ -75,7 +64,6 @@ class Customer
    def self.delete(customer)
      DB.exec("DELETE FROM customer WHERE id = '#{customer.id}';")
    end
-
 
    def ==(another_customer)
      self.name() && another_customer.name()

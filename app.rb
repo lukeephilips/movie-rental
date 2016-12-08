@@ -30,8 +30,14 @@ post('/customer/new') do
 end
 patch('/customer/:id') do
   @customer = Customer.find_by_id(params['id'].to_i)
-  @customer.update_name(:name => params['name'])
+
+  @customer.checkout({:movie_ids => params.fetch('movie_ids')})
   @movies = Movie.all
+
+
+  # @customer = Customer.find_by_id(params['id'].to_i)
+  # @customer.update_name(:name => params['name'])
+  # @movies = Movie.all
   erb(:customer)
 end
 delete('/customer/:id/delete') do
@@ -42,13 +48,12 @@ delete('/customer/:id/delete') do
 erb(:index)
 end
 
+
 get('/movie/:id') do
   @movie = Movie.find_by_id(params['id'].to_i)
   erb(:movie)
 end
-
 post('/movie/new') do
-
   movie = Movie.new({:id => nil, :title => params['title']})
   movie.save
   actor = Actor.new({:id => nil, :name => params['name']})
@@ -63,7 +68,6 @@ patch('/movie/:id') do
   @movie.update(:title => params['title'])
   erb(:movie)
 end
-
 delete('/movie/:id/delete') do
   @movie = Movie.find_by_id(params['id'].to_i)
   Movie.delete(@movie)
