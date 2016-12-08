@@ -8,9 +8,6 @@ require('pg')
 require('pry')
 also_reload('lib/**/*.rb')
 
-DB = PG.connect({:dbname => 'rentals_test'})
-
-
 get('/') do
   @customers = Customer.all
   @movies = Movie.all
@@ -89,3 +86,41 @@ delete('/movie/:id/delete') do
   @in_stock = Movie.in_stock
 erb(:index)
 end
+
+DB = PG.connect({:dbname => 'rentals_test'})
+movie = Movie.new({:id => nil, :title => "Die Hard"})
+movie.save
+actor = Actor.new({:id => nil, :name => "Bruce Willis"})
+actor.save
+DB.exec("INSERT INTO movies_actors (actor_id, movie_id) VALUES (#{actor.id}, #{movie.id});")
+
+movie = Movie.new({:id => nil, :title => "Die Hard 2"})
+movie.save
+DB.exec("INSERT INTO movies_actors (actor_id, movie_id) VALUES (#{actor.id}, #{movie.id});")
+movie = Movie.new({:id => nil, :title => "Die Hard with a Vengeance"})
+movie.save
+DB.exec("INSERT INTO movies_actors (actor_id, movie_id) VALUES (#{actor.id}, #{movie.id});")
+actor = Actor.new({:id => nil, :name => "Samuel L Jackson"})
+actor.save
+DB.exec("INSERT INTO movies_actors (actor_id, movie_id) VALUES (#{actor.id}, #{movie.id});")
+movie = Movie.new({:id => nil, :title => "Predator"})
+movie.save
+actor = Actor.new({:id => nil, :name => "Arnold Schwarzenegger"})
+actor.save
+DB.exec("INSERT INTO movies_actors (actor_id, movie_id) VALUES (#{actor.id}, #{movie.id});")
+movie = Movie.new({:id => nil, :title => "Predator 2"})
+movie.save
+actor = Actor.new({:id => nil, :name => "Danny Glover"})
+actor.save
+DB.exec("INSERT INTO movies_actors (actor_id, movie_id) VALUES (#{actor.id}, #{movie.id});")
+movie = Movie.new({:id => nil, :title => "Alien"})
+movie.save
+actor = Actor.new({:id => nil, :name => "Sigorney Weaver"})
+actor.save
+DB.exec("INSERT INTO movies_actors (actor_id, movie_id) VALUES (#{actor.id}, #{movie.id});")
+movie = Movie.new({:id => nil, :title => "Aliens"})
+movie.save
+DB.exec("INSERT INTO movies_actors (actor_id, movie_id) VALUES (#{actor.id}, #{movie.id});")
+movie = Movie.new({:id => nil, :title => "Aliens 3"})
+movie.save
+DB.exec("INSERT INTO movies_actors (actor_id, movie_id) VALUES (#{actor.id}, #{movie.id});")
