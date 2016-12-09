@@ -7,13 +7,17 @@
       </ul>
 
 <% elsif !@overdue.eql?(nil) %>
-<h1>Overdue movies:</h1>
-  <% @overdue.each do |item| %>
-    <ul>
-      <li>Movie: <%= item[0].title %></li>
-      <li>Checked out by: <%= item[1].name %></li>
-      <li>Days overdue: <%= item[2]%></li>
-    </ul>
+  <% if @overdue == [] %>
+  <p>There are no overdue movies. Good policing.</p>
+  <% else %>
+  <h1>Overdue movies:</h1>
+    <% @overdue.each do |item| %>
+      <ul>
+        <li>Movie: <%= item[0].title %></li>
+        <li>Checked out by: <%= item[1].name %></li>
+        <li>Days overdue: <%= item[2]%></li>
+      </ul>
+    <% end %>
   <% end %>
 
 <% else %>
