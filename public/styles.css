@@ -1,0 +1,85 @@
+* {
+  font-family: 'Helvetica', sans-serif;
+  box-sizing: border-box;
+}
+
+/* HEADER STYLES */
+
+header h1 {
+  font-weight: bold;
+  float: right;
+  padding-bottom: 15px;
+  border-bottom: 2px solid tomato;
+}
+
+.header {
+  padding: 0px;
+  margin-bottom: 25px;
+}
+/* SIDEBAR THING STYLE */
+
+.log_in {
+  margin-top: 25px;
+}
+
+.sidebarthing {
+  padding: 0 25px 0 0;
+  border-right: solid 2px black;
+}
+.sidebarthing ul {
+  padding: 0;
+}
+.sidebarthing ul li {
+  float: left;
+  display: block;
+  margin:  7.5px 0;
+  font-weight: bold;
+}
+
+.sidebarthing h4 {
+  font-weight: bold;
+  font-size: 1.35em;
+  border-bottom: 4px solid tomato;
+  padding-bottom: 10px;
+}
+
+
+/* ANCHOR STYLES */
+a {
+  color: black;
+}
+
+a:hover {
+  text-decoration: none;
+  color: tomato;
+}
+
+
+#cust_form,
+#movie_form {
+  display: none;
+}
+
+.all_movies,
+.all_cust {
+  display: none;
+}
+
+div.die-hard {
+  width: 80%;
+  padding-left: 25px;
+}
+
+img {
+  height: 700px;
+}
+
+.slick-dots li button:before {
+  font-size: 35px;
+  color: black;
+  opacity: .60;
+}
+
+.slick-dots li.slick-active button:before {
+  color: red;
+}

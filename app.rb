@@ -17,18 +17,39 @@ get('/') do
   erb(:index)
 end
 
+get('/login/customer') do
+  name = params['name']
+  cust = Customer.find_by_name(name)
+  if cust != nil
+    all_of = Customer.all
+    if all_of.include?(cust)
+      @customer = cust
+      @movies = Movie.all
+      @in_stock = Movie.in_stock
+      (:customer)
+    else
+      @customers = all_of
+      @movies = Movie.all
+      @in_stock = Movie.in_stock
+      (:index)
+    end
+  end
+end
+
 get('/customer/:id') do
   @customer = Customer.find_by_id(params['id'].to_i)
   @movies = Movie.all
   @in_stock = Movie.in_stock
   erb(:customer)
 end
+
 post('/customer/new') do
-  Customer.new({:id => nil, :name => params['name']}).save
+  @customer = Customer.new({:id => nil, :name => params['name']})
+  @customer.save
   @customers = Customer.all
   @movies = Movie.all
   @in_stock = Movie.in_stock
-  erb(:index)
+  erb(:customer)
 end
 patch('/customer/:id') do
   @customer = Customer.find_by_id(params['id'].to_i)

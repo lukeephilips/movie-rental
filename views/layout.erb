@@ -1,24 +1,59 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <meta name="viewport" content="initial-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="<%= url('/slick-theme.css') %>">
+    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/jquery.slick/1.6.0/slick.css"/>
     <link rel="stylesheet" href="<%= url('/styles.css') %>">
-    <title>90's Movie Rentals</title>
     <script
-    src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+    src="https://code.jquery.com/jquery-3.1.1.js"
+    integrity="sha256-16cdPddA6VdVInumRGo6IbivbERE8p7CQR3HzTBuELA="
     crossorigin="anonymous"></script>
-    <script type="text/javascript" src="<%= url('/script.js') %>"></script>
+    <script type="text/javascript" src="//cdn.jsdelivr.net/jquery.slick/1.6.0/slick.min.js"></script>
+    <script type="text/javascript" src="<%='/script.js'%>"> </script>
 
+
+
+    <title>LIL' CAESAR'S VIDEO STORE</title>
   </head>
   <body>
-    <div class="container">
-      <div class="header">
-        <h1><a href="/">90's Movie Rentals</a></h1>
+    <header class="container">
+      <div class="row">
+        <div class="">
+          <h1><a href="/">LIL' CAESAR'S VIDEO STORE</a></h1>
+        </div>
       </div>
-      <div class="main">
-        <a href="/find" class="">Find various things</a>
-        <%= yield %>
+    </header>
+
+    <div class="container"> <!--MAIN BODY -->
+      <div class="col-md-2 hidden-sm hidden-xs sidebarthing">
+        <h4>CUSTOMER PORTAL</h4>
+        <form class="log_in" action="/login/customer">
+          <div class="form-group">
+            <label for="name">LOG IN:</label>
+            <input class="form-control" type="text" name="name" placeholder="User Name">
+          </div>
+        <button type="submit" class="btn btn-sm btn-danger">LOG IN</button>
+        </form>
+        <br>
+        <br>
+        <h4>EMPLOYEE PORTAL</h4>
+        <ul>
+
+          <li><a id="new_cust">NEW CUSTOMER</a></li>
+          <li><a id="all_cust">ALL CUSTOMERS</a></li>
+          <li><a id="new_movie">NEW MOVIE</a></li>
+          <li><a id="all_movie">ALL MOVIES</a></li>
+          <a href="/find" class="">Find various things</a>
+        </ul>
       </div>
+    <div class="col-md-10">
+      <%= yield %>
     </div>
+
+    <footer>
+
+    </footer>
   </body>
 </html>

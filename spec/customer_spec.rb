@@ -103,4 +103,5 @@ describe(Customer) do
       expect(@customer1.movies).to(eq([]))
     end
   end
+
 end
