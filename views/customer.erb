@@ -66,7 +66,8 @@
         <% if @customer.history.any? %>
           <ul>
             <% @customer.history.each do |movie| %>
-              <li><%= movie[0].title() %> - Returned: <span class="due_date"> Due: <%= movie[1] %></span></li>
+              <li><%= movie[0].title() %></li>
+              <li>Returned: <%= movie[1] %></li>
             <% end %>
             </ul>
         <% else %>

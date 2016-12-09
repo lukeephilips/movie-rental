@@ -1,3 +1,4 @@
+require "date"
 class Movie
   attr_reader(:id, :title)
   def initialize(attributes)
@@ -27,6 +28,18 @@ class Movie
     movie_actors
   end
 
+  def self.find_by_actor(actor_id) #read movies_actors
+    movies =[]
+    results = DB.exec("SELECT movie_id FROM movies_actors WHERE actor_id = #{actor_id};")
+    results.each do |result|
+      movie_id = result.fetch('movie_id').to_i
+      movie = DB.exec("SELECT * FROM movies WHERE id = #{movie_id};")
+      title = movie.first().fetch('title')
+      movies.push(Movie.new({:title => title, :id => actor_id}))
+    end
+    movies
+  end
+
   def current_renter #read checkouts
     checked_out = []
     results = DB.exec("SELECT customer_id FROM checkouts WHERE movie_id = #{self.id};")
@@ -48,6 +61,32 @@ class Movie
       available.push(Movie.new({:id => movie_id, :title => title}))
     end
     available
+  end
+  def self.overdue #read checkouts
+    overdue = []
+    movie_id = 0
+    title = ''
+    customer_name =''
+    customer_id = 0
+    days_overdue = 0
+    checkouts = DB.exec("SELECT * FROM checkouts WHERE due_date < '#{(Date.today).to_s}';")
+    checkouts.each do |checkout|
+      due_date = checkout.fetch('due_date')
+      days_overdue = (Date.today - Date.parse(due_date)).to_i
+      movie_id = checkout.fetch('movie_id').to_i
+
+      movies = DB.exec("SELECT * FROM movies WHERE id = #{movie_id};")
+      movies.each do |movie|
+        customer = DB.exec("SELECT * FROM customer WHERE id IN (SELECT customer_id FROM checkouts WHERE due_date < '#{(Date.today).to_s}');")
+        customer.each do |customer|
+          customer_name = customer.fetch('name')
+          customer_id = customer.fetch('id').to_i
+          title = movie.fetch('title')
+        end
+      end
+      overdue.push([Movie.new({:id => movie_id, :title => title}),Customer.new({:name => customer_name, :id => customer_id}), days_overdue])
+    end
+    overdue
   end
 
   def save

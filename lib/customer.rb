@@ -27,7 +27,7 @@ class Customer
 
     attributes.fetch(:movie_ids, []).each() do |movie_id|
       DB.exec("INSERT INTO checkouts (movie_id, customer_id, due_date) VALUES (#{movie_id}, #{self.id}, '#{due}');")
-      DB.exec("INSERT INTO history (movie_id, customer_id) VALUES (#{movie_id}, #{self.id});")
+
 
     end
   end
@@ -36,8 +36,7 @@ class Customer
     # title = params.fetch(:title)
     attributes.fetch(:movie_ids, []).each() do |movie_id|
       DB.exec("DELETE FROM checkouts WHERE movie_id = #{movie_id} AND customer_id = #{self.id};")
-      DB.exec("UPDATE history SET returned = '#{Date.today}' WHERE movie_id = #{movie_id} AND customer_id = #{self.id};")
-
+      DB.exec("INSERT INTO history (movie_id, customer_id, returned) VALUES (#{movie_id}, #{self.id}, '#{Date.today}');")
     end
   end
 
@@ -90,6 +89,19 @@ class Customer
      name = customer.first['name']
      found_customer = Customer.new({:id => id, :name => name})
    end
+   def self.find_by_movie(movie_id) #read checkouts
+     found_customer = nil
+     results = DB.exec("SELECT * FROM checkouts WHERE movie_id = #{movie_id};")
+     results.each do |result|
+       due_date = result.fetch('customer_id').to_i
+       customer_id = result.fetch('customer_id').to_i
+       customer = DB.exec("SELECT * FROM customer WHERE id = #{customer_id};")
+       name = customer.first().fetch('name')
+       found_customer = Customer.new({:name => name, :id => customer_id})
+     end
+     found_customer
+   end
+
    def self.delete(customer)
      DB.exec("DELETE FROM customer WHERE id = '#{customer.id}';")
    end

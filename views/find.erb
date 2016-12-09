@@ -1,0 +1,43 @@
+<% if @found_movies %>
+<h4>Movies with <%= @actor.name %>: </h4>
+    <ul>
+      <% @found_movies.each do |movie| %>
+        <li><%= movie.title() %></li>
+      <% end %>
+      </ul>
+
+<% elsif !@overdue.eql?(nil) %>
+<h1>Overdue movies:</h1>
+  <% @overdue.each do |item| %>
+    <ul>
+      <li>Movie: <%= item[0].title %></li>
+      <li>Checked out by: <%= item[1].name %></li>
+      <li>Days overdue: <%= item[2]%></li>
+    </ul>
+  <% end %>
+
+<% else %>
+  <form action="/movie_by_actor" method="get">
+    <label>Find all movies with an actor</label>
+    <select class="form-control" name="movie_by_actor">
+      <% @actors.each do |actor| %>
+        <option><%= actor.name%></option>
+      <% end %>
+    </select>
+    <button type="submit" class="btn btn-danger">Find</button>
+  </form>
+  <br>
+  <form action="/customer_with_movie" method="get">
+    <label>Find customer with a movie</label>
+    <select class="form-control" name="title">
+      <% @movies.each do |movie| %>
+        <option><%= movie.title%></option>
+      <% end %>
+    </select>
+    <button type="submit" class="btn btn-danger">Find</button>
+  </form>
+  <br>
+  <form action="/overdue" method="get">
+    <button type="submit" class="btn btn-danger"><label>Find overdue movies</label></button>
+  </form>
+<% end %>
