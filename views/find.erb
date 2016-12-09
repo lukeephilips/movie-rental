@@ -22,7 +22,7 @@
 
 <% else %>
   <form action="/movie_by_actor" method="get">
-    <label>Find all movies with an actor</label>
+    <label>Find all movies with the actor:</label>
     <select class="form-control" name="movie_by_actor">
       <% @actors.each do |actor| %>
         <option><%= actor.name%></option>
@@ -32,7 +32,7 @@
   </form>
   <br>
   <form action="/customer_with_movie" method="get">
-    <label>Find customer with a movie</label>
+    <label>Find the customer with the movie:</label>
     <select class="form-control" name="title">
       <% @movies.each do |movie| %>
         <option><%= movie.title%></option>
@@ -42,6 +42,7 @@
   </form>
   <br>
   <form action="/overdue" method="get">
+    <input type="hidden" name="empty" value="">
     <button type="submit" class="btn btn-danger"><label>Find overdue movies</label></button>
   </form>
 <% end %>
