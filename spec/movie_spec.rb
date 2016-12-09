@@ -72,14 +72,14 @@ describe(Movie) do
     end
   end
 
-  describe('#history') do
-    it("checks the history of a particular movies past checkouts") do
+  describe('#current_renter') do
+    it("shows which movies a customer currently has") do
       customer1 = Customer.new({:id => nil, :name => "James"})
       customer1.save
       @movie1.save
       @movie2.save
       customer1.checkout(:movie_ids => [@movie1.id, @movie2.id])
-      expect(@movie1.history[0].name).to(eq('James'))
+      expect(@movie1.current_renter[0].name).to(eq('James'))
     end
   end
   describe('#in_stock') do

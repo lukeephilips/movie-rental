@@ -108,39 +108,15 @@ delete('/movie/:id/delete') do
 erb(:index)
 end
 
-movie = Movie.new({:id => nil, :title => "Die Hard"})
-movie.save
-actor = Actor.new({:id => nil, :name => "Bruce Willis"})
-actor.save
-DB.exec("INSERT INTO movies_actors (actor_id, movie_id) VALUES (#{actor.id}, #{movie.id});")
-
-movie = Movie.new({:id => nil, :title => "Die Hard 2"})
-movie.save
-DB.exec("INSERT INTO movies_actors (actor_id, movie_id) VALUES (#{actor.id}, #{movie.id});")
-movie = Movie.new({:id => nil, :title => "Die Hard with a Vengeance"})
-movie.save
-DB.exec("INSERT INTO movies_actors (actor_id, movie_id) VALUES (#{actor.id}, #{movie.id});")
-actor = Actor.new({:id => nil, :name => "Samuel L Jackson"})
-actor.save
-DB.exec("INSERT INTO movies_actors (actor_id, movie_id) VALUES (#{actor.id}, #{movie.id});")
-movie = Movie.new({:id => nil, :title => "Predator"})
-movie.save
-actor = Actor.new({:id => nil, :name => "Arnold Schwarzenegger"})
-actor.save
-DB.exec("INSERT INTO movies_actors (actor_id, movie_id) VALUES (#{actor.id}, #{movie.id});")
-movie = Movie.new({:id => nil, :title => "Predator 2"})
-movie.save
-actor = Actor.new({:id => nil, :name => "Danny Glover"})
-actor.save
-DB.exec("INSERT INTO movies_actors (actor_id, movie_id) VALUES (#{actor.id}, #{movie.id});")
-movie = Movie.new({:id => nil, :title => "Alien"})
-movie.save
-actor = Actor.new({:id => nil, :name => "Sigorney Weaver"})
-actor.save
-DB.exec("INSERT INTO movies_actors (actor_id, movie_id) VALUES (#{actor.id}, #{movie.id});")
-movie = Movie.new({:id => nil, :title => "Aliens"})
-movie.save
-DB.exec("INSERT INTO movies_actors (actor_id, movie_id) VALUES (#{actor.id}, #{movie.id});")
-movie = Movie.new({:id => nil, :title => "Aliens 3"})
-movie.save
-DB.exec("INSERT INTO movies_actors (actor_id, movie_id) VALUES (#{actor.id}, #{movie.id});")
+if Movie.all == []
+  shelf = {"Die Hard" => ["Bruce Willis"], "Die Hard 2" => ["Bruce Willis"], "Die Hard with a Vengeance" => ["Bruce Willis", "Samuel L Jackson"], "Predator" => ["Arnold Schwarzenegger", "Carl Weathers", "Jesse Ventura"],"Predator 2" => ["Danny Glover"],"Alien" => ["Sigorney Weaver"],"Aliens" => ["Sigorney Weaver"],"Aliens 3" => ["Sigorney Weaver"]}
+  shelf.each do |a|
+    movie = Movie.new({:id => nil, :title => "#{a[0]}"})
+    movie.save
+    a[1].each do |b|
+      actor = Actor.new({:id => nil, :name => "#{b}"})
+      actor.save
+      DB.exec("INSERT INTO movies_actors (actor_id, movie_id) VALUES (#{actor.id}, #{movie.id});")
+    end
+  end
+end

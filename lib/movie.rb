@@ -27,7 +27,7 @@ class Movie
     movie_actors
   end
 
-  def history #read checkouts
+  def current_renter #read checkouts
     checked_out = []
     results = DB.exec("SELECT customer_id FROM checkouts WHERE movie_id = #{self.id};")
     results.each do |result|

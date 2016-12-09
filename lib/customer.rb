@@ -24,8 +24,11 @@ class Customer
 
     DB.exec("UPDATE customer SET name = '#{@name}' WHERE id = #{@id};")
 
+
     attributes.fetch(:movie_ids, []).each() do |movie_id|
       DB.exec("INSERT INTO checkouts (movie_id, customer_id, due_date) VALUES (#{movie_id}, #{self.id}, '#{due}');")
+      DB.exec("INSERT INTO history (movie_id, customer_id) VALUES (#{movie_id}, #{self.id});")
+
     end
   end
   def return(attributes) #patch checkouts
@@ -33,6 +36,8 @@ class Customer
     # title = params.fetch(:title)
     attributes.fetch(:movie_ids, []).each() do |movie_id|
       DB.exec("DELETE FROM checkouts WHERE movie_id = #{movie_id} AND customer_id = #{self.id};")
+      DB.exec("UPDATE history SET returned = '#{Date.today}' WHERE movie_id = #{movie_id} AND customer_id = #{self.id};")
+
     end
   end
 
@@ -48,6 +53,19 @@ class Customer
       checkouts.push([new_movie, due_date])
     end
     checkouts
+  end
+  def history #read checkouts
+    history = []
+    results = DB.exec("SELECT * FROM history WHERE customer_id = #{self.id};")
+    results.each do |result|
+      movie_id = result.fetch("movie_id").to_i
+      returned = result.fetch("returned")
+      movie = DB.exec("SELECT * FROM movies WHERE id = #{movie_id};")
+      title = movie.first.fetch("title")
+      new_movie = Movie.new(:title => title, :due_date => returned, :id => movie_id)
+      history.push([new_movie, returned])
+    end
+    history
   end
 
    def self.all
